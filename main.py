@@ -21,8 +21,8 @@ food = {"Monday": ["玉米+鸡蛋", "西红柿炒蛋、咸鸭蛋", "香菇炒肉
         "Sunday": ["牛肉粉", "香菇香菜汤", "香菇炒肉"],
         }
 morning = food[date.strftime("%A")][0]
-lunch = food[date.strftime("%A")][0]
-night = food[date.strftime("%A")][0]
+lunch = food[date.strftime("%A")][1]
+night = food[date.strftime("%A")][2]
 
 
 today = datetime.now()
