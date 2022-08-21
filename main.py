@@ -5,6 +5,25 @@ from wechatpy.client.api import WeChatMessage, WeChatTemplate
 import requests
 import os
 import random
+import time
+
+week_list = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
+year = time.localtime().tm_year  # 既可以获取当前年份，也可以指定年份
+month = time.localtime().tm_mon  # 既可以获取当前月份，也可以指定年月份
+day = time.localtime().tm_mday  # 既可以获取当前天数，也可以指定天数
+date = datetime.date(datetime(year=year, month=month, day=day))
+food = {"Monday": ["玉米+鸡蛋", "西红柿炒蛋、咸鸭蛋", "香菇炒肉、咸鸭蛋"],
+        "Tuesday": ["肉丝米粉", "香菇炒肉、咸鸭蛋", "鸡蛋干炒肉、咸鸭蛋"],
+        "Wednesday": ["两个鸡蛋", "火腿肠炒蛋", "榨菜炒肉"],
+        "Thursday": ["玉米", "蒸鸡蛋", "香菇炒肉"],
+        "Friday": ["肉丝粉", "鸡蛋干炒肉", "西红柿炒蛋"],
+        "Saturday": ["两个鸡蛋", "两个鸡蛋", "蒸鸡蛋+炒火腿肠"],
+        "Sunday": ["牛肉粉", "香菇香菜汤", "香菇炒肉"],
+        }
+morning = food[date.strftime("%A")][0]
+lunch = food[date.strftime("%A")][0]
+night = food[date.strftime("%A")][0]
+
 
 today = datetime.now()
 start_date = os.environ['START_DATE']
@@ -16,7 +35,6 @@ app_secret = os.environ["APP_SECRET"]
 
 user_id = os.environ["USER_ID"]
 template_id = os.environ["TEMPLATE_ID"]
-
 
 def get_weather():
   url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
@@ -48,6 +66,6 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
-data = {"city":{"value":city},"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"morning":{"value":morning},"lunch":{"value":lunch},"night":{"value":night},"city":{"value":city},"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
